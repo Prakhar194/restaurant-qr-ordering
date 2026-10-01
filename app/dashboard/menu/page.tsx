@@ -1,0 +1,2 @@
+import {createClient} from "@/lib/supabase/server";import MenuPanel from "@/components/menu-panel";
+export default async function MenuPage(){const sb=await createClient();const {data:categories}=await sb.from("categories").select("id,name,sort_order").order("sort_order");const {data:items}=await sb.from("menu_items").select("id,category_id,name,description,price,half_price,full_price,has_half_full,is_available,image_url").order("name");return <MenuPanel initial={items??[]} categories={categories??[]}/>}

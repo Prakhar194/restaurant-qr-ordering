@@ -1,0 +1,2 @@
+import {createClient} from "@/lib/supabase/server";import TablesPanel from "@/components/tables-panel";
+export default async function TablesPage(){const sb=await createClient();const {data:tables}=await sb.from("restaurant_tables").select("id,table_number,qr_token,is_active,orders(id,status,total,order_items(item_name,quantity,line_total))").order("table_number");return <TablesPanel initial={tables??[]}/>}

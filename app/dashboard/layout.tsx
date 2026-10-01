@@ -1,0 +1,3 @@
+import {redirect} from "next/navigation";import {createClient} from "@/lib/supabase/server";import DashboardShell from "@/components/dashboard-shell";import type {Role} from "@/lib/types";
+export const dynamic="force-dynamic";
+export default async function DashboardLayout({children}:{children:React.ReactNode}){const sb=await createClient();const {data:{user}}=await sb.auth.getUser();if(!user)redirect("/login");const {data:profile}=await sb.from("profiles").select("full_name,role").eq("id",user.id).single();if(!profile)redirect("/login");return <DashboardShell role={profile.role as Role} name={profile.full_name}>{children}</DashboardShell>}
